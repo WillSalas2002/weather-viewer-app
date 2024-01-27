@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+</head>
+<body>
+
+<nav>
+    <div th:if="${user == null}">
+        <a th:href="@{/register}" th:text="'Register'"></a>
+        <a th:href="@{/login}" th:text="'Sing In'"></a>
+    </div>
+    <div th:if="${user != null}">
+        <p th:text="${user.getLogin()}"></p>
+        <a th:href="@{/logout}" th:text="'log out'"></a>
+    </div>
+</nav>
+
+<div>
+    <form th:method="POST" th:action="@{/search}">
+        <label for="search">
+            <input type="search" name="search" id="search" required/>
+        </label>
+        <input type="submit" value="Search"/>
+    </form>
+</div>
+
+<div th:if="${responseList.size() > 0}">
+    <div th:each="weather : ${responseList}">
+        <div th:text="${weather}"></div>
+    </div>
+</div>
+
+</body>

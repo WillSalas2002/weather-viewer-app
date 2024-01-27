@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>Search</title>
+</head>
+<body>
+<nav>
+    <div th:if="${user == null}">
+        <a th:href="@{/register}" th:text="'Register'"></a>
+        <a th:href="@{/login}" th:text="'Sing In'"></a>
+    </div>
+    <div th:if="${user != null}">
+        <p th:text="${user.getLogin()}"></p>
+        <a th:href="@{/logout}" th:text="'log out'"></a>
+    </div>
+</nav>
+<h1>Search Page</h1>
+<div>
+    <form th:method="POST" th:action="@{/search}">
+        <label for="search">
+            <input type="search" name="search" id="search" required/>
+        </label>
+        <input type="submit" value="Search"/>
+    </form>
+    <hr/>
+    <form th:method="POST" th:action="@{/home}">
+        <p th:text="${locationResponse}"></p>
+        <input type="hidden" th:value="${locationResponse.getCityName()}" name="locationName"/>
+        <input type="hidden" th:value="${locationResponse.getLatitude()}" name="latitude"/>
+        <input type="hidden" th:value="${locationResponse.getLongitude()}" name="longitude"/>
+        <input type="submit" value="Add"/>
+    </form>
+</div>
+
+</body>
+</html>
