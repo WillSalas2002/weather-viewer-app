@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
+    <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
 <h1>Registration page</h1>
-<form th:method="POST" th:action="@{/register}">
-    <label for="login">Enter Login: </label>
-    <input type="text" name="login" id="login" />
-    <br/>
-    <label for="password">Enter Password: </label>
-    <input type="password" name="password" id="password" />
-    <br/>
-    <input type="submit" value="Sign Up"/>
-</form>
+<div class="container">
+    <form th:method="POST" th:action="@{/register}">
+        <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Enter your login">
+            <label for="floatingInput">Login</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <input class="btn btn-primary w-100 py-2" type="submit" value="Sign in"/>
+        <span>Already have an account?</span>
+        <a th:href="@{/login}">Sign in</a>
+    </form>
+</div>
 </body>
 </html>

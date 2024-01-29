@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Home</title>
+    <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
 <h1>Login page</h1>
@@ -16,6 +17,9 @@
     <input type="password" name="password" id="password" required/>
     <br/>
     <input type="submit" value="Sign in"/>
+    <br/>
+    <span>Create new account.</span>
+    <a th:href="@{/register}">Sign up</a>
 </form>
 </body>
 </html>

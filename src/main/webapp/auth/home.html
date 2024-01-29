@@ -4,15 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Home</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
-
 <nav>
     <div th:if="${user == null}">
         <a th:href="@{/register}" th:text="'Register'"></a>
         <a th:href="@{/login}" th:text="'Sing In'"></a>
     </div>
-    <div th:if="${user != null}">
+    <div th:unless="${user == null}">
         <p th:text="${user.getLogin()}"></p>
         <a th:href="@{/logout}" th:text="'log out'"></a>
     </div>
@@ -29,6 +29,23 @@
 
 <div th:if="${responseList.size() > 0}">
     <div th:each="weather : ${responseList}">
+        <div class="card text-center mb-3" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${weather.getCityName() + ', '}">Special title treatment</h5>
+                <p class="card-text" th:text="${weather.getCondition()}"></p>
+                <p class="card-text" th:text="${weather.getSunriseTime()}"></p>
+                <p class="card-text" th:text="${weather.getSunsetTime()}"></p>
+                <p class="card-text" th:text="${weather.getTemperature()}"></p>
+                <p class="card-text" th:text="${weather.getTemperatureFeelsLike()}"></p>
+                <p class="card-text" th:text="${weather.getSpeed()}"></p>
+                <p class="card-text" th:text="${weather.getPressure()}"></p>
+                <form th:method="POST" th:action="@{/home}">
+                    <input type="hidden" name="method" value="DELETE"/>
+                    <input th:type="hidden" th:value="${weather.cityName}" th:name="locationName"/>
+                    <input class="btn btn-warning" th:type="submit" th:value="Delete"/>
+                </form>
+            </div>
+        </div>
         <div th:text="${weather}"></div>
     </div>
 </div>
