@@ -1,6 +1,6 @@
 package com.will.weather.servlets;
 
-import com.will.weather.dao.HibernateSessionRepository;
+import com.will.weather.repository.HibernateSessionRepository;
 import com.will.weather.models.UserSession;
 import com.will.weather.service.JsonToJavaConverter;
 import com.will.weather.service.WeatherClient;

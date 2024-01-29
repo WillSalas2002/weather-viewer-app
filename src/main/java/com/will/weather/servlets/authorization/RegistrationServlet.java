@@ -1,6 +1,6 @@
 package com.will.weather.servlets.authorization;
 
-import com.will.weather.dao.HibernateUserRepository;
+import com.will.weather.repository.HibernateUserRepository;
 import com.will.weather.models.User;
 import com.will.weather.servlets.BaseServlet;
 import com.will.weather.utils.ThymeleafUtil;

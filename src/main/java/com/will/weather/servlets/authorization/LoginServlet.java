@@ -1,7 +1,7 @@
 package com.will.weather.servlets.authorization;
 
-import com.will.weather.dao.HibernateSessionRepository;
-import com.will.weather.dao.HibernateUserRepository;
+import com.will.weather.repository.HibernateSessionRepository;
+import com.will.weather.repository.HibernateUserRepository;
 import com.will.weather.models.UserSession;
 import com.will.weather.models.User;
 import com.will.weather.servlets.BaseServlet;

@@ -23,7 +23,7 @@ public class HibernateLocationRepository {
     public void save(Location location) {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
-            session.persist(location);
+            session.merge(location);
             session.getTransaction().commit();
         }
     }

@@ -1,8 +1,8 @@
 package com.will.weather.servlets;
 
-import com.will.weather.dao.HibernateLocationRepository;
-import com.will.weather.dao.HibernateSessionRepository;
-import com.will.weather.dao.HibernateUserRepository;
+import com.will.weather.repository.HibernateLocationRepository;
+import com.will.weather.repository.HibernateSessionRepository;
+import com.will.weather.repository.HibernateUserRepository;
 import com.will.weather.models.Location;
 import com.will.weather.models.User;
 import com.will.weather.models.UserSession;
@@ -10,6 +10,7 @@ import com.will.weather.service.JsonToJavaConverter;
 import com.will.weather.service.WeatherClient;
 import com.will.weather.service.dto.WeatherApiResponse;
 import com.will.weather.utils.ThymeleafUtil;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,16 @@ public class HomeServlet extends BaseServlet {
     private final HibernateSessionRepository hibernateSessionRepository = new HibernateSessionRepository();
     private final HibernateLocationRepository hibernateLocationRepository = new HibernateLocationRepository();
     private final HibernateUserRepository hibernateUserRepository = new HibernateUserRepository();
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("method");
+        if (action != null && action.equals("DELETE")) {
+            doDelete(req, resp);
+        } else {
+            super.service(req, resp);
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -90,6 +101,27 @@ public class HomeServlet extends BaseServlet {
         user.getLocations().add(location);
         location.getUsers().add(user);
         hibernateUserRepository.saveUser(user);
+        doGet(req, resp);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String locationName = req.getParameter("locationName");
+        Cookie[] cookies = req.getCookies();
+        String sessionId = getCookieByName(cookies);
+
+        Optional<UserSession> sessionOptional = hibernateSessionRepository.findBySessionId(sessionId);
+        UserSession userSession = sessionOptional.get();
+        Optional<Location> locationOptional = hibernateLocationRepository.findByLocationName(locationName);
+
+        User user = userSession.getUser();
+        Location location = locationOptional.get();
+
+        location.getUsers().remove(user);
+        user.getLocations().remove(location);
+        hibernateUserRepository.saveUser(user);
+        hibernateLocationRepository.save(location);
+
         doGet(req, resp);
     }
 
