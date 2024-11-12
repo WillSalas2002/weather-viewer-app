@@ -13,11 +13,9 @@ public class MyWebAppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("com.will");
-
+//        container.setInitParameter("spring.profiles.active", "dev");
         container.addListener(new ContextLoaderListener(context));
-
         ServletRegistration.Dynamic dispatcher = container.addServlet("dispatcher", new DispatcherServlet(context));
-
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
     }
