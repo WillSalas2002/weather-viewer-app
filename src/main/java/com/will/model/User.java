@@ -36,6 +36,11 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Session> session;
 
-    @ManyToMany(mappedBy = "locations", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Location> locations;
+
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
 }

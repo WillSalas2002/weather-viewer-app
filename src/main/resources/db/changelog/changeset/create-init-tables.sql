@@ -24,7 +24,7 @@ CREATE TABLE _session
     uuid       UUID PRIMARY KEY,
     user_id    BIGINT    NOT NULL,
     expires_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES _user (id)
+    FOREIGN KEY (user_id) REFERENCES _user (id) ON DELETE CASCADE
 );
 
 -- changeset Ilkham:create-table-user_location
@@ -33,6 +33,6 @@ CREATE TABLE _user_location
     user_id     BIGINT,
     location_id BIGINT,
     PRIMARY KEY (user_id, location_id),
-    FOREIGN KEY (user_id) REFERENCES _user (id),
-    FOREIGN KEY (location_id) REFERENCES _location (id)
+    FOREIGN KEY (user_id) REFERENCES _user (id) ON DELETE SET NULL,
+    FOREIGN KEY (location_id) REFERENCES _location (id) ON DELETE SET NULL
 )
