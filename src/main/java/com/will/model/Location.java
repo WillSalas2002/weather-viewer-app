@@ -11,15 +11,18 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@Getter
+@Setter
 @Entity
 @Table(name = "_location")
 public class Location {
@@ -45,4 +48,17 @@ public class Location {
 
     @Column(name = "longitude")
     private BigDecimal longitude;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return Objects.equals(id, location.id) && Objects.equals(title, location.title) && Objects.equals(latitude, location.latitude) && Objects.equals(longitude, location.longitude);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, latitude, longitude);
+    }
 }

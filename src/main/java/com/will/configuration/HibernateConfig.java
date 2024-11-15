@@ -1,7 +1,7 @@
 package com.will.configuration;
 
 import com.will.model.Location;
-import com.will.model.Session;
+import com.will.model.UserSession;
 import com.will.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class HibernateConfig {
         Configuration configuration = new Configuration();
 
         configuration.addAnnotatedClass(Location.class);
-        configuration.addAnnotatedClass(Session.class);
+        configuration.addAnnotatedClass(UserSession.class);
         configuration.addAnnotatedClass(User.class);
         configuration.addProperties(loadProperties());
 

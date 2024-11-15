@@ -9,18 +9,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@Getter
+@Setter
 @Entity
 @Table(name = "_session")
-public class Session {
+public class UserSession {
 
     @Id
     @Column(name = "uuid")
@@ -32,4 +35,22 @@ public class Session {
 
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
+
+    public UserSession(UUID uuid, LocalDateTime expiresAt) {
+        this.uuid = uuid;
+        this.expiresAt = expiresAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserSession that = (UserSession) o;
+        return Objects.equals(uuid, that.uuid) && Objects.equals(expiresAt, that.expiresAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, expiresAt);
+    }
 }
