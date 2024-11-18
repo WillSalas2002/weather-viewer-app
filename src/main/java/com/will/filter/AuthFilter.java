@@ -25,6 +25,7 @@ public class AuthFilter implements Filter {
     private final String COOKIE_NAME = "sessionId";
     private SessionService sessionService;
 
+    // SessionService should be added to the context explicitly, otherwise filter throws error
     @Override
     public void init(FilterConfig filterConfig) {
         ServletContext servletContext = filterConfig.getServletContext();
@@ -39,14 +40,13 @@ public class AuthFilter implements Filter {
 
         String requestURI = request.getRequestURI();
 
-        if (requestURI.equals(request.getContextPath() + "/login") ||
-                requestURI.equals(request.getContextPath() + "/registration")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         Cookie cookie = getSessionIdFromCookie(request);
         if (cookie == null) {
+            if (requestURI.equals(request.getContextPath() + "/login") ||
+                    requestURI.equals(request.getContextPath() + "/registration")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
             log.info("User doesn't have a cookie, redirecting them to login page");
             response.sendRedirect(request.getContextPath() + "/login");
             return;

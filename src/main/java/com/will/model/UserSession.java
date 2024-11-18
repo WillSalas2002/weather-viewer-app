@@ -29,7 +29,7 @@ public class UserSession {
     @Column(name = "uuid")
     private UUID uuid;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
