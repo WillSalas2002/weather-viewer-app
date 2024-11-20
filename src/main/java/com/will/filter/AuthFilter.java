@@ -41,22 +41,24 @@ public class AuthFilter implements Filter {
         String requestURI = request.getRequestURI();
 
         Cookie cookie = getSessionIdFromCookie(request);
+        if (requestURI.equals(request.getContextPath() + "/login") ||
+                requestURI.equals(request.getContextPath() + "/registration")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (cookie == null) {
-            if (requestURI.equals(request.getContextPath() + "/login") ||
-                    requestURI.equals(request.getContextPath() + "/registration")) {
-                filterChain.doFilter(request, response);
-                return;
-            }
             log.info("User doesn't have a cookie, redirecting them to login page");
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
         String sessionId = cookie.getValue();
-        if (!sessionService.isExpired(sessionId)) {
+        if (sessionService.isSessionValid(sessionId)) {
             filterChain.doFilter(request, response);
         } else {
             log.info("User session has expired, deleting cookie and redirecting to login page");
+//            sessionId.deleteCookie();
             cookie.setMaxAge(0);
             response.addCookie(cookie);
             response.sendRedirect(request.getContextPath() + "/login");
