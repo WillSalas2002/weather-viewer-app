@@ -38,6 +38,10 @@ public class UserService {
             if (!sessionService.isSessionValid(uuid.toString())) {
                 sessionService.deleteSession(uuid);
             } else {
+                // I am updating cookie on the user side, so that the new user won't have old user's sessionId
+                Cookie cookie = new Cookie("sessionId", uuid.toString());
+                cookie.setMaxAge(60 * 60);
+                response.addCookie(cookie);
                 return userMapper.toUserDto(user);
             }
         }
