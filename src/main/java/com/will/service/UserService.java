@@ -46,7 +46,6 @@ public class UserService {
 
     public UserDto findUserBySessionId(String sessionId) {
         UserSession userSession = sessionService.findUserSessionById(UUID.fromString(sessionId));
-
         User user = userRepository.findUserBySessionId(userSession).orElseThrow(() -> new RuntimeException("User by this session not found " + userSession.getUuid()));
         return userMapper.toUserDto(user);
     }

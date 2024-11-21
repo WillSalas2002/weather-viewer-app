@@ -58,7 +58,6 @@ public class AuthFilter implements Filter {
             filterChain.doFilter(request, response);
         } else {
             log.info("User session has expired, deleting cookie and redirecting to login page");
-//            sessionId.deleteCookie();
             cookie.setMaxAge(0);
             response.addCookie(cookie);
             response.sendRedirect(request.getContextPath() + "/login");

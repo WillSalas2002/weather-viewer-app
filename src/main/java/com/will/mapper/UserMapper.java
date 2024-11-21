@@ -11,6 +11,8 @@ public interface UserMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "login", target = "login")
     @Mapping(source = "password", target = "password")
+    @Mapping(target = "locations", ignore = true)
+    @Mapping(target = "userSession", ignore = true)
     User toUser(UserDto userDto);
 
     @Mapping(source = "id", target = "id")

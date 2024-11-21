@@ -19,14 +19,14 @@ public class RegistrationController {
     private final SessionService sessionService;
 
     @GetMapping
-    public String getRegistration(Model model) {
+    public String registrationPage(Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("userDto", userDto);
         return "register";
     }
 
     @PostMapping
-    public String postRegistration(@ModelAttribute("userDto") UserDto userDto, HttpServletResponse response) {
+    public String registration(@ModelAttribute("userDto") UserDto userDto, HttpServletResponse response) {
         System.out.println(userDto.getLogin() + " " + userDto.getPassword());
         sessionService.createAndAttachSession(userDto, response);
         return "redirect:/home";

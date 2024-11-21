@@ -17,17 +17,18 @@ public class LoginController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String loginGet(Model model) {
+    public String loginPage(@ModelAttribute("error") String error, Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("userDto", userDto);
+        model.addAttribute("error", error);
         return "login";
     }
 
     @PostMapping("/login")
-    public String loginPost(@ModelAttribute("userDto") UserDto userDto, Model model, HttpServletResponse response) {
+    public String login(@ModelAttribute("userDto") UserDto userDto, Model model, HttpServletResponse response) {
         UserDto authenticatedUser = userService.authenticate(userDto, response);
         model.addAttribute("userDto", authenticatedUser);
         System.out.println(authenticatedUser);
-        return "home";
+        return "redirect:/home";
     }
 }
