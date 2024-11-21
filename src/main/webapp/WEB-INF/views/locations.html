@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Location</title>
+</head>
+<body>
+<h1>Location page</h1>
+<form method="get" th:action="@{/location}">
+    <label>Location:
+        <input type="text" th:name="'locationName'"/>
+    </label>
+</form>
+
+<h1 th:text="${location}"></h1>
+</body>
+</html>
