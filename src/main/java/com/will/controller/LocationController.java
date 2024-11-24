@@ -1,7 +1,7 @@
 package com.will.controller;
 
 import com.will.dto.LocationDto;
-import com.will.service.ForecaseService;
+import com.will.service.ForecastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +19,12 @@ import java.util.List;
 @RequestMapping("/location")
 public class LocationController {
 
-    private final ForecaseService forecaseService;
+    private final ForecastService forecastService;
 
     @GetMapping
     public String locationPage(@RequestParam("city") String city, Model model) throws URISyntaxException, IOException, InterruptedException {
         // TODO: need to validate city, if not valid return to the user;
-        List<LocationDto> locations = forecaseService.getCoordinatesByCity(city);
+        List<LocationDto> locations = forecastService.getCoordinatesByCity(city);
         model.addAttribute("locations", locations);
         return "location";
     }
