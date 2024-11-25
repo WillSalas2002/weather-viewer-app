@@ -13,7 +13,15 @@
 </form>
 
 <div th:each="location : ${locations}">
-    <div th:text="${location}"></div>
+    <form style="border: 1px solid black" th:action="@{/location}" th:object="${locationDto}" method="post">
+        <input type="hidden" th:field="*{name}" th:value="${location.name}" />
+        <input type="hidden" th:field="*{state}" th:value="${location.state}" />
+        <input type="hidden" th:field="*{country}" th:value="${location.country}" />
+        <input type="hidden" th:field="*{lon}" th:value="${location.lon}" />
+        <input type="hidden" th:field="*{lat}" th:value="${location.lat}" />
+        <div th:text="'Debug: ' + ${location}"></div> <!-- Add for debugging -->
+        <input type="submit" value="Save" />
+    </form>
 </div>
 </body>
 </html>
