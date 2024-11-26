@@ -1,5 +1,6 @@
 package com.will.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,8 +41,12 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserSession> userSession;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private Set<Location> locations;
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<Location> locations = new HashSet<>();
+
+    public User(Long id) {
+        this.id = id;
+    }
 
     public User(String login, String password) {
         this.login = login;

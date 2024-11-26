@@ -1,5 +1,6 @@
 package com.will.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -35,13 +37,13 @@ public class Location {
     @Column(name = "title")
     private String title;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "_user_location",
             joinColumns = @JoinColumn(name = "location_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @Column(name = "latitude")
     private BigDecimal latitude;
