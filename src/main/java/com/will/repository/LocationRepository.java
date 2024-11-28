@@ -40,17 +40,15 @@ public class LocationRepository {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
-            Location result = session.createQuery("SELECT l FROM Location l WHERE l.longitude =: lon AND l.latitude =: lat", Location.class)
+            Location managedLocation = session.createQuery("SELECT l FROM Location l WHERE l.longitude =: lon AND l.latitude =: lat", Location.class)
                     .setParameter("lon", location.getLongitude())
                     .setParameter("lat", location.getLatitude())
                     .uniqueResult();
 
-            if (result == null) {
-                session.persist(location);
+            if (managedLocation == null) {
+                managedLocation = session.merge(location);
             }
-
             User managedUser = session.get(User.class, user.getId());
-            Location managedLocation = session.merge(location);
 
             if (!managedUser.getLocations().contains(managedLocation)) {
                 managedUser.getLocations().add(managedLocation);
