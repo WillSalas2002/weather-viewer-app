@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>Login Page</h1>
+<div style="color: red" th:text="${error}"></div>
 <form method="post" th:action="@{/login}" th:object="${userDto}">
     <label>Login:
         <input type="text" th:field="*{login}"/>

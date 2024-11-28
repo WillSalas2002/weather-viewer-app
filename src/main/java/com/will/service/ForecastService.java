@@ -3,7 +3,6 @@ package com.will.service;
 import com.will.dto.ForecastDto;
 import com.will.dto.LocationDto;
 import com.will.entity.Coord;
-import com.will.entity.Forecast;
 import com.will.mapper.ForecastMapper;
 import com.will.parse.CoordinateParser;
 import com.will.parse.ForecastParser;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -33,14 +33,29 @@ public class ForecastService {
         return coordinateParser.parse(response.body());
     }
 
-    public ForecastDto getForecastByCoordinates(Coord coordinates) throws URISyntaxException, IOException, InterruptedException {
-        HttpResponse<String> response = client.getForecastByCoordinates(coordinates.getLat(), coordinates.getLon());
-        if (response.statusCode() != 200) {
-            // TODO: here I need to throw exception some kinda
-            return null;
+    public List<ForecastDto> getForecastByCoordinates(List<Coord> coordinates) throws URISyntaxException, IOException, InterruptedException {
+        return coordinates.stream()
+                .map(this::getCoordHttpResponse)
+                .map(HttpResponse::body)
+                .map(this::parseAndMapToDto)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    private HttpResponse<String> getCoordHttpResponse(Coord coord) {
+        try {
+            return client.getForecastByCoordinates(coord.getLat(), coord.getLon());
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        Forecast forecast = forecastParser.parse(response.body());
-        // TODO: finish parsing here
-        return forecastMapper.toDto(forecast);
+    }
+
+    private ForecastDto parseAndMapToDto(String body) {
+        try {
+            return forecastMapper.toDto(forecastParser.parse(body));
+        } catch (Exception e) {
+            System.out.printf("Failed to process forecast: {%s}", body);
+            throw new RuntimeException(e);
+        }
     }
 }

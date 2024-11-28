@@ -11,5 +11,8 @@
         <input type="text" th:name="'city'"/>
     </label>
 </form>
+<div th:each="forecast : ${forecastList}">
+    <div th:text="${forecast}"></div>
+</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.will.controller;
 
+import com.will.dto.ForecastDto;
 import com.will.dto.UserDto;
 import com.will.entity.Coord;
 import com.will.service.ForecastService;
@@ -30,9 +31,10 @@ public class HomeController {
         String sessionId = cookie.getValue();
         UserDto userDto = userService.findUserBySessionId(sessionId);
         List<Coord> coordList = locationService.findSavedCoordinates(userDto);
-//        if (!coordList.isEmpty()) {
-//            forecastService.getForecastByCoordinates(coordList);
-//        }
+        if (!coordList.isEmpty()) {
+            List<ForecastDto> forecastList = forecastService.getForecastByCoordinates(coordList);
+            model.addAttribute("forecastList", forecastList);
+        }
         model.addAttribute("userDto", userDto);
         return "home";
     }
