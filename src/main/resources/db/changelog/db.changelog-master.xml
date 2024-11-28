@@ -6,4 +6,6 @@
     
     <include file="classpath:db/changelog/changeset/create-init-tables.sql"/>
 
+    <include file="classpath:db/changelog/changeset/add-unique-on-location.sql"/>
+
 </databaseChangeLog>
