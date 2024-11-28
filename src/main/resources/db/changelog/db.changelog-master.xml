@@ -8,4 +8,6 @@
 
     <include file="classpath:db/changelog/changeset/add-unique-on-location.sql"/>
 
+    <include file="classpath:db/changelog/changeset/alter-lon-lat-types.sql"/>
+
 </databaseChangeLog>
