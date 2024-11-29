@@ -10,6 +10,7 @@ import com.will.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -32,5 +33,12 @@ public class LocationService {
         return locations.stream()
                 .map(locationMapper::toCoord)
                 .toList();
+    }
+
+    public void remove(String lon, String lat, String sessionId) {
+        BigDecimal longitude = new BigDecimal(lon);
+        BigDecimal latitude = new BigDecimal(lat);
+        UserDto userDto = userService.findUserBySessionId(sessionId);
+        locationRepository.removeFromUserLocation(longitude, latitude, new User(userDto.getId()));
     }
 }

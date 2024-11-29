@@ -9,11 +9,12 @@ import org.mapstruct.Named;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 
 @Mapper(componentModel = "spring")
 public interface ForecastMapper {
 
+    @Mapping(source = "coord.lon", target = "lon")
+    @Mapping(source = "coord.lat", target = "lat")
     @Mapping(source = "main.temp", target = "temp")
     @Mapping(source = "main.feelsLike", target = "feelsLike")
     @Mapping(source = "main.tempMin", target = "tempMin")

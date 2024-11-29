@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -40,10 +41,7 @@ public class LocationRepository {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
-            Location managedLocation = session.createQuery("SELECT l FROM Location l WHERE l.longitude =: lon AND l.latitude =: lat", Location.class)
-                    .setParameter("lon", location.getLongitude())
-                    .setParameter("lat", location.getLatitude())
-                    .uniqueResult();
+            Location managedLocation = getLocationByCoord(location.getLongitude(), location.getLatitude(), session);
 
             if (managedLocation == null) {
                 managedLocation = session.merge(location);
@@ -64,5 +62,34 @@ public class LocationRepository {
                 transaction.rollback();
             }
         }
+    }
+
+    public void removeFromUserLocation(BigDecimal lon, BigDecimal lat, User user) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            User managedUser = session.merge(user);
+            Location location = getLocationByCoord(lon, lat, session);
+
+            if (managedUser.getLocations().contains(location)) {
+                location.getUsers().remove(managedUser);
+                managedUser.getLocations().remove(location);
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                System.out.println(e.getMessage());
+                transaction.rollback();
+            }
+        }
+    }
+
+    private static Location getLocationByCoord(BigDecimal lon, BigDecimal lat, Session session) {
+        return session.createQuery("SELECT l FROM Location l WHERE l.longitude =: lon AND l.latitude =: lat", Location.class)
+                .setParameter("lon", lon)
+                .setParameter("lat", lat)
+                .uniqueResult();
     }
 }

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,16 @@ public class LocationController {
         Cookie cookie = getCookie(request);
         String sessionId = cookie.getValue();
         locationService.save(locationDto, sessionId);
+        return "redirect:/home";
+    }
+
+    @DeleteMapping
+    public String delete(@RequestParam("lon") String lon, @RequestParam("lat") String lat, HttpServletRequest request) {
+        Cookie cookie = getCookie(request);
+        String sessionId = cookie.getValue();
+        lon = "59.6176603";
+        lat = "42.4600229";
+        locationService.remove(lon, lat, sessionId);
         return "redirect:/home";
     }
 

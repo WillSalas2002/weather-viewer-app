@@ -12,7 +12,13 @@
     </label>
 </form>
 <div th:each="forecast : ${forecastList}">
-    <div th:text="${forecast}"></div>
+    <form method="post" th:action="@{/location}">
+        <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" th:name="lon" th:value="*{forecast.lon}"/>
+        <input type="hidden" th:name="lat" th:value="*{forecast.lat}"/>
+        <div th:text="${forecast}"></div>
+        <input type="submit" value="Remove"/>
+    </form>
 </div>
 </body>
 </html>

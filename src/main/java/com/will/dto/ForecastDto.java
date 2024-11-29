@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Builder
 public class ForecastDto {
 
+    private String lon;
+    private String lat;
     private Double temp;
     private Double feelsLike;
     private Double tempMin;
