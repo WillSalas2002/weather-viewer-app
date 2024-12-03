@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -35,9 +36,9 @@ public class ForecastService {
 
     public List<ForecastDto> getForecastByCoordinates(List<Coord> coordinates) throws URISyntaxException, IOException, InterruptedException {
         return coordinates.stream()
-                .map(this::getCoordHttpResponse)
-                .map(HttpResponse::body)
-                .map(this::parseAndMapToDto)
+                .map(coord -> Map.entry(coord, getCoordHttpResponse(coord))) // Pair Coord with HttpResponse
+                .map(entry -> Map.entry(entry.getKey(), entry.getValue().body())) // Extract body and keep Coord
+                .map(entry -> parseAndMapToDto(entry.getValue(), entry.getKey())) // Pass body and Coord
                 .filter(Objects::nonNull)
                 .toList();
     }
@@ -50,9 +51,9 @@ public class ForecastService {
         }
     }
 
-    private ForecastDto parseAndMapToDto(String body) {
+    private ForecastDto parseAndMapToDto(String body, Coord coord) {
         try {
-            return forecastMapper.toDto(forecastParser.parse(body));
+            return forecastMapper.toDtoWithCoords(forecastParser.parse(body), coord);
         } catch (Exception e) {
             System.out.printf("Failed to process forecast: {%s}", body);
             throw new RuntimeException(e);

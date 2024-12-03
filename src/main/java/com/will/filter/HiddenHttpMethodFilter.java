@@ -23,7 +23,7 @@ public class HiddenHttpMethodFilter implements Filter {
             HttpServletRequestWrapper wrapper = new HttpServletRequestWrapper(httpRequest) {
                 @Override
                 public String getMethod() {
-                    return method;
+                    return method.toUpperCase();
                 }
             };
             chain.doFilter(wrapper, response);

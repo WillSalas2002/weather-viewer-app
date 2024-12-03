@@ -38,7 +38,6 @@ public class LocationController {
 
     @PostMapping
     public String location(@ModelAttribute("locationDto") LocationDto locationDto, HttpServletRequest request) {
-        // TODO: need to save the chosen location and redirect to home page;
         Cookie cookie = getCookie(request);
         String sessionId = cookie.getValue();
         locationService.save(locationDto, sessionId);
@@ -49,8 +48,6 @@ public class LocationController {
     public String delete(@RequestParam("lon") String lon, @RequestParam("lat") String lat, HttpServletRequest request) {
         Cookie cookie = getCookie(request);
         String sessionId = cookie.getValue();
-        lon = "59.6176603";
-        lat = "42.4600229";
         locationService.remove(lon, lat, sessionId);
         return "redirect:/home";
     }

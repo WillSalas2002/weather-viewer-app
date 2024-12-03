@@ -69,7 +69,7 @@ public class LocationRepository {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
-            User managedUser = session.merge(user);
+            User managedUser = session.get(User.class, user.getId());
             Location location = getLocationByCoord(lon, lat, session);
 
             if (managedUser.getLocations().contains(location)) {
